@@ -1,0 +1,203 @@
+/* สไตล์ทั่วไป */
+body {
+    font-family: 'Google Sans', sans-serif;
+    background-color: #F7F7F7; /* สีพื้นหลังขาวนวล */
+    color: #333; /* สีตัวอักษรเทาเข้ม */
+    margin: 0;
+    padding: 20px;
+}
+
+/* หัวตาราง */
+th {
+    background-color: #E0E0E0; /* สีเทาอ่อน */
+    color: #333; /* สีตัวอักษรเทาเข้ม */
+    padding: 12px;
+    border-bottom: 2px solid #BDBDBD; /* สีเทาเข้ม */
+    position: relative;
+}
+
+/* เซลล์ตาราง */
+td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #E0E0E0; /* สีเทาอ่อน */
+    position: relative;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* เส้นตาราง */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #FFFFFF; /* สีพื้นหลังของตารางขาว */
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+table th, table td {
+    border: 1px solid #E0E0E0; /* สีเส้นที่เบา */
+}
+
+/* สีพื้นหลังของแถว */
+table tr:nth-child(odd) td {
+    background-color: #F0F0F0; /* สีพื้นหลังของแถวคี่ */
+}
+
+table tr:nth-child(even) td {
+    background-color: #FFFFFF; /* สีพื้นหลังของแถวคู่ */
+}
+
+/* ช่องกรอกข้อมูล */
+/* ช่องกรอกข้อมูล */
+input {
+    width: calc(100% - 16px);
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #E0E0E0;
+    border-radius: 5px;
+    outline: none;
+    background-color: #F9F9F9;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+/* เพิ่มแสงนีออนเมื่อช่องกรอกข้อมูลมีโฟกัส */
+input:focus {
+    border-color: #FFFFFF; /* ขอบเป็นสีขาว */
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.7), 0 0 15px rgba(255, 255, 255, 0.5); /* แสงนีออนสีขาว */
+    background-color: #F1F1F1; /* สีพื้นหลังเมื่อโฟกัส */
+}
+
+
+/* ปุ่ม */
+button {
+    background-color: #BDBDBD;
+    color: #333;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    transition: background-color 0.3s, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+    background-color: #9E9E9E;
+    box-shadow: 0 0 15px rgba(158, 158, 158, 0.7);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+/* ปุ่มลบในตาราง */
+td button {
+    background-color: #FF6F6F; /* สีพื้นหลังแดง */
+    color: #FFFFFF; /* สีตัวอักษรขาว */
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s ease, box-shadow 0.3s ease;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+td button:hover {
+    background-color: #FF3B3B; /* สีแดงเข้ม */
+    box-shadow: 0 0 15px rgba(255, 59, 59, 0.7); /* แสงสีแดง */
+    transform: scale(1.1); /* ขยายปุ่มเล็กน้อย */
+}
+
+td button:active {
+    transform: scale(0.95); /* ขยับปุ่มเล็กน้อยเมื่อกด */
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes expandDown {
+    0% {
+        opacity: 0;
+        height: 0;
+    }
+    50% {
+        opacity: 1;
+        height: auto;
+    }
+    100% {
+        opacity: 1;
+        height: auto;
+    }
+}
+
+@keyframes collapseUp {
+    0% {
+        opacity: 1;
+        height: auto;
+    }
+    50% {
+        opacity: 1;
+        height: 0;
+    }
+    100% {
+        opacity: 0;
+        height: 0;
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scaleY(0.5);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+        transform: scaleY(1.1);
+    }
+    100% {
+        transform: scaleY(1);
+    }
+}
+
+@keyframes bounceOut {
+    0% {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scaleY(1.1);
+    }
+    100% {
+        opacity: 0;
+        transform: scaleY(0.5);
+    }
+}
+
+/* Animation สำหรับแถว */
+tr {
+    overflow: hidden;
+    animation-duration: 0.6s;
+    animation-timing-function: ease-out;
+}
+
+tr.expand {
+    animation-name: bounceIn;
+}
+
+tr.collapse {
+    animation-name: bounceOut;
+}
