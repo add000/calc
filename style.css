@@ -1,0 +1,317 @@
+/* เพิ่ม CSS Variables สำหรับ Light Theme */
+:root {
+    --background-color: #F7F7F7;
+    --text-color: #333;
+    --table-background: #FFFFFF;
+    --table-border: #E0E0E0;
+    --header-background: #E0E0E0;
+    --row-odd-background: #F0F0F0;
+    --row-even-background: #FFFFFF;
+    --input-background: #F9F9F9;
+    --input-border: #E0E0E0;
+    --button-background: #BDBDBD;
+    --button-hover: #9E9E9E;
+    --delete-button: #FF6F6F;
+    --delete-button-hover: #FF3B3B;
+    --box-shadow: rgba(0, 0, 0, 0.1);
+    --input-glow: rgba(189, 189, 189, 0.3);
+    --delete-button-glow: rgba(255, 111, 111, 0.3);
+    --text-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    --text-shadow-header: 0 0 15px rgba(0, 0, 0, 0.25);
+}
+
+/* Dark Theme */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: #1a1a1a;
+        --text-color: #E0E0E0;
+        --table-background: #2d2d2d;
+        --table-border: #404040;
+        --header-background: #404040;
+        --row-odd-background: #333333;
+        --row-even-background: #2d2d2d;
+        --input-background: #404040;
+        --input-border: #505050;
+        --button-background: #505050;
+        --button-hover: #606060;
+        --delete-button: #8B0000;
+        --delete-button-hover: #A00000;
+        --box-shadow: rgba(0, 0, 0, 0.3);
+        --input-glow: rgba(80, 80, 80, 0.5);
+        --delete-button-glow: rgba(139, 0, 0, 0.5);
+        --text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        --text-shadow-header: 0 0 15px rgba(255, 255, 255, 0.25);
+    }
+}
+
+/* ปรับปรุง CSS ที่มีอยู่ให้ใช้ตัวแปร */
+body {
+    font-family: 'Google Sans', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+    text-shadow: var(--text-shadow);
+}
+
+th {
+    background-color: var(--header-background);
+    color: var(--text-color);
+    padding: 12px;
+    border-bottom: 2px solid var(--table-border);
+    text-shadow: var(--text-shadow-header);
+    font-weight: 500;
+}
+
+td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid var(--table-border);
+    text-shadow: var(--text-shadow);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--table-background);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 8px var(--box-shadow);
+}
+
+table th, table td {
+    border: 1px solid var(--table-border);
+}
+
+table tr:nth-child(odd) td {
+    background-color: var(--row-odd-background);
+}
+
+table tr:nth-child(even) td {
+    background-color: var(--row-even-background);
+}
+
+input {
+    width: calc(100% - 16px);
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid var(--input-border);
+    border-radius: 5px;
+    outline: none;
+    background-color: var(--input-background);
+    color: var(--text-color);
+    box-sizing: border-box;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    text-shadow: var(--text-shadow);
+}
+
+input:focus {
+    border-color: var(--button-background);
+    box-shadow: 0 0 15px var(--input-glow),
+                0 0 30px var(--input-glow);
+    transform: translateY(-1px);
+}
+
+button {
+    background-color: var(--button-background);
+    color: var(--text-color);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    transition: background-color 0.3s, transform 0.3s ease;
+    text-shadow: var(--text-shadow);
+}
+
+button:hover {
+    background-color: var(--button-hover);
+}
+
+td button {
+    background-color: var(--delete-button);
+    color: #FFFFFF;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1;
+    box-shadow: 0 0 10px var(--delete-button-glow);
+}
+
+td button:hover {
+    background-color: var(--delete-button-hover);
+    transform: translateY(-2px) scale(1.1);
+    box-shadow: 0 0 20px var(--delete-button-glow),
+                0 0 40px var(--delete-button-glow),
+                0 0 60px var(--delete-button-glow);
+    animation: glowPulse 2s infinite;
+}
+
+td button:active {
+    transform: translateY(0);
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes expandDown {
+    0% {
+        opacity: 0;
+        height: 0;
+    }
+    50% {
+        opacity: 1;
+        height: auto;
+    }
+    100% {
+        opacity: 1;
+        height: auto;
+    }
+}
+
+@keyframes collapseUp {
+    0% {
+        opacity: 1;
+        height: auto;
+    }
+    50% {
+        opacity: 1;
+        height: 0;
+    }
+    100% {
+        opacity: 0;
+        height: 0;
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scaleY(0.5);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+        transform: scaleY(1.1);
+    }
+    100% {
+        transform: scaleY(1);
+    }
+}
+
+@keyframes bounceOut {
+    0% {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scaleY(1.1);
+    }
+    100% {
+        opacity: 0;
+        transform: scaleY(0.5);
+    }
+}
+
+/* Animation สำหรับแถว */
+tr {
+    overflow: hidden;
+    animation-duration: 0.6s;
+    animation-timing-function: ease-out;
+}
+
+tr.expand {
+    animation-name: bounceIn;
+}
+
+tr.collapse {
+    animation-name: bounceOut;
+}
+
+.expand {
+    animation: expandAnimation 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.collapse {
+    animation: collapseAnimation 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes expandAnimation {
+    0% {
+        transform: scaleY(0) translateY(-20px);
+        opacity: 0;
+    }
+    100% {
+        transform: scaleY(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes collapseAnimation {
+    0% {
+        transform: scaleY(1) translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scaleY(0) translateY(-20px);
+        opacity: 0;
+    }
+}
+
+/* เพิ่ม Ripple Effect สำหรับปุ่มลบ */
+td button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease-out, height 0.3s ease-out;
+}
+
+td button:active::after {
+    width: 150%;
+    height: 150%;
+}
+
+/* เพิ่ม Pulse Animation สำหรับ Delete button */
+@keyframes glowPulse {
+    0% {
+        box-shadow: 0 0 10px var(--delete-button-glow);
+    }
+    50% {
+        box-shadow: 0 0 20px var(--delete-button-glow),
+                    0 0 40px var(--delete-button-glow);
+    }
+    100% {
+        box-shadow: 0 0 10px var(--delete-button-glow);
+    }
+}
+
+td button:hover {
+    animation: glowPulse 2s infinite;
+}

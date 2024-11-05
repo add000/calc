@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เครื่องคิดเลขแจกแจงความถี่</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        input {
+            width: 100%;
+        }
+        .expand {
+            animation: expandAnimation 0.6s ease-out;
+        }
+
+        .collapse {
+            animation: collapseAnimation 0.6s ease-out;
+        }
+
+        @keyframes expandAnimation {
+            from {
+                transform: scaleY(0);
+                opacity: 0;
+            }
+            to {
+                transform: scaleY(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes collapseAnimation {
+            from {
+                transform: scaleY(1);
+                opacity: 1;
+            }
+            to {
+                transform: scaleY(0);
+                opacity: 0;
+            }
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans&display=swap">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <h1>เครื่องคิดเลขแจกแจงความถี่</h1>
+    <table id="frequencyTable">
+        <thead>
+            <tr>
+                <th>อันตรภาคชั้น (l-h)</th>
+                <th>ความถี่ (fi)</th>
+                <th>ขอบล่าง (l)</th>
+                <th>ขอบบน (h)</th>
+                <th>จุดกึ่งกลางชั้น (xi)</th>
+                <th>fixi (fi * xi)</th>
+                <th>ความถี่สะสม (cf)</th>
+                <th>ความถี่สัมพัทธ์ (fi/n)</th>
+                <th>ความถี่สะสมสัมพัทธ์ (cf/n)</th>
+                <th>ความกว้าง (i)</th>
+                <th>ลบแถว</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" class="interval" placeholder="เช่น 10-20"></td>
+                <td><input type="number" class="frequency" oninput="calculate()"></td>
+                <td class="lowerBound"></td>
+                <td class="upperBound"></td>
+                <td class="midpoint"></td>
+                <td class="fixi"></td>
+                <td class="cumulativeFrequency"></td>
+                <td class="relativeFrequency"></td>
+                <td class="cumulativeRelativeFrequency"></td>
+                <td class="width"></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <div>
+        <strong>n = <span id="totalFrequency">0</span></strong>
+    </div>
+    <br>
+    <div>
+        <strong>ค่าเฉลี่ย (x̄) = <span id="meanX">0</span></strong>
+    </div>
+    <br>
+    <div>
+        <strong>Σfi * xi = <span id="sumFixi">0</span></strong>
+    </div>
+    <br>
+    <button onclick="addRow()">เพิ่มแถว</button>
+
+    <script>
+        function addRow() {
+            const table = document.getElementById('frequencyTable').getElementsByTagName('tbody')[0];
+            const newRow = table.rows[0].cloneNode(true);
+
+            // ล้างค่าใน input
+            const inputs = newRow.getElementsByTagName('input');
+            for (let i = 0; i < inputs.length; i++) {
+                inputs[i].value = '';
+            }
+
+            // ล้างค่าในช่���งที่ไม่ใช่ input
+            const cells = newRow.getElementsByTagName('td');
+            for (let i = 2; i < cells.length - 1; i++) {
+                cells[i].innerHTML = '';
+            }
+
+            // เพิ่มปุ่มลบแถว
+            const deleteCell = newRow.getElementsByTagName('td')[10];
+            deleteCell.innerHTML = '<button onclick="deleteRow(this)">&times;</button>';
+
+            // เพิ่มคลาสสำหรับ animation การขยาย
+            newRow.classList.add('expand');
+            table.appendChild(newRow);
+
+            // เอาคลาสออกหลังจาก animation เสร็จสิ้น
+            setTimeout(() => {
+                newRow.classList.remove('expand');
+            }, 600);
+        }
+
+        function deleteRow(button) {
+            const row = button.parentElement.parentElement;
+            const table = document.getElementById('frequencyTable').getElementsByTagName('tbody')[0];
+
+            if (table.rows.length > 1) {
+                row.classList.add('collapse');
+                setTimeout(() => {
+                    row.remove();
+                    calculate();
+                }, 600);
+            }
+        }
+
+        function calculate() {
+            const table = document.getElementById('frequencyTable');
+            const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+            let cumulativeFrequency = 0;
+            let totalFrequency = 0;
+            let sumXiFi = 0;
+
+            // คำนวณความถี่ทั้งหมด (n) และ Σfi * xi
+            for (let i = 0; i < rows.length; i++) {
+                const fi = rows[i].getElementsByClassName('frequency')[0].value;
+                if (fi) {
+                    totalFrequency += parseInt(fi);
+                }
+            }
+
+            let sumFixi = 0;
+
+            for (let i = 0; i < rows.length; i++) {
+                const interval = rows[i].getElementsByClassName('interval')[0].value;
+                const fi = rows[i].getElementsByClassName('frequency')[0].value;
+
+                if (interval && fi) {
+                    const bounds = interval.split('-');
+                    const lowerBound = parseFloat(bounds[0]) - 0.5;
+                    const upperBound = parseFloat(bounds[1]) + 0.5;
+                    const midpoint = Math.round((lowerBound + upperBound) / 2); // ไม่มีทศนิยม
+                    const width = upperBound - lowerBound;
+
+                    cumulativeFrequency += parseInt(fi);
+                    const fixi = midpoint * parseInt(fi); // ใช้ค่า xi แบบไม่มีทศนิยมในการคำนวณ
+                    sumXiFi += fixi;
+
+                    const relativeFrequency = (parseInt(fi) / totalFrequency).toFixed(2);
+                    const cumulativeRelativeFrequency = (cumulativeFrequency / totalFrequency).toFixed(2);
+
+                    rows[i].getElementsByClassName('lowerBound')[0].innerHTML = lowerBound.toFixed(2);
+                    rows[i].getElementsByClassName('upperBound')[0].innerHTML = upperBound.toFixed(2);
+                    rows[i].getElementsByClassName('midpoint')[0].innerHTML = midpoint; // ไม่มีทศนิยม
+                    rows[i].getElementsByClassName('fixi')[0].innerHTML = fixi; // ใช้ค่า fixi ที่คำนวณจาก xi แบบไม่มีทศนิยม
+                    rows[i].getElementsByClassName('cumulativeFrequency')[0].innerHTML = cumulativeFrequency;
+                    rows[i].getElementsByClassName('relativeFrequency')[0].innerHTML = relativeFrequency;
+                    rows[i].getElementsByClassName('cumulativeRelativeFrequency')[0].innerHTML = cumulativeRelativeFrequency;
+                    rows[i].getElementsByClassName('width')[0].innerHTML = width.toFixed(2);
+                }
+            }
+
+            // แสดงผลรวมของความถี่ (n) และค่าเฉลี่ย (x̄) และ Σfi * xi
+            document.getElementById('totalFrequency').innerText = totalFrequency;
+            document.getElementById('sumFixi').innerText = sumXiFi;
+            const meanX = (sumXiFi / totalFrequency).toFixed(2);
+            document.getElementById('meanX').innerText = meanX;
+        }
+    </script>
+</body>
+</html>
